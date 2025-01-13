@@ -1,0 +1,7 @@
+{
+  "name": "sample_task_ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
