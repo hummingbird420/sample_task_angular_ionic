@@ -1,0 +1,23 @@
+<div class="calendar-content">
+  <ion-accordion-group #date_field>
+    <ion-accordion value="s_date" [disabled]="isDisabled">
+      <ion-item slot="header">
+        <ion-label>{{dateField?(dateField | date:'MMM d, yy'):'Select Date'
+          }}</ion-label>
+        <ion-note slot="end" id="datetimeValue"></ion-note>
+      </ion-item>
+
+      <ion-datetime presentation="date" id="datetime" slot="content" display-format="MMMM YY" [(ngModel)]="dateField"
+        #datetime [min]="min ? updateMinDate() : undefined" [max]="max ? updateMaxDate() : '2040-12-31'">
+
+        <ion-buttons slot="buttons">
+          <ion-button color="danger" (click)="dateReset()">Reset</ion-button>
+          &nbsp;
+          <ion-button color="primary" (click)="toggleAccordion()">Done</ion-button>
+        </ion-buttons>
+      </ion-datetime>
+    </ion-accordion>
+  </ion-accordion-group>
+
+
+</div>

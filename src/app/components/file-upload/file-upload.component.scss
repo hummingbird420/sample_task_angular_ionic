@@ -1,0 +1,87 @@
+ion-icon.folder-outline {
+    margin-right: 8px !important;
+}
+
+.file-button {
+    width: 100%;
+}
+
+.file-button {
+    --background: linear-gradient(to right, #1a1eec, #0bb985);
+
+}
+
+.file-button:hover {
+    --background: linear-gradient(to right, #0f1296, #067956);
+    --background-activated: var(--background);
+    --background-focused: var(--background);
+    --background-hover: var(--background);
+
+}
+
+.file-img {
+    width: 100%;
+    max-height: 250px;
+}
+
+.file-img-close {
+    position: relative;
+    right: -326px;
+    top: 11px;
+    color: red;
+    font-size: 20px;
+}
+
+.d-justify {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    padding: 0 10%;
+
+}
+
+.create {
+    --background: linear-gradient(to top, rgb(59, 9, 240), rgb(9, 250, 30));
+
+}
+
+.create:hover {
+    --background: linear-gradient(to top, rgb(37, 7, 148), rgb(4, 134, 15));
+    --background-activated: var(--background);
+    --background-focused: var(--background);
+    --background-hover: var(--background);
+
+}
+
+.gallary {
+    --background: linear-gradient(to top, rgba(228, 41, 228, 1), rgba(255, 0, 0, 1));
+
+}
+
+.gallary:hover {
+    --background: linear-gradient(to top, rgb(170, 9, 170), rgb(192, 6, 6));
+    --background-activated: var(--background);
+    --background-focused: var(--background);
+    --background-hover: var(--background);
+
+}
+
+.camera {
+    --background: linear-gradient(to top, rgba(252, 155, 155, 1), rgba(255, 255, 0, 1));
+
+}
+
+.camera:hover {
+    --background: linear-gradient(to top, rgb(199, 9, 9), rgb(180, 180, 8));
+    --background-activated: var(--background);
+    --background-focused: var(--background);
+    --background-hover: var(--background);
+}
+
+.create,
+.gallary,
+.camera {
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+}

@@ -1,0 +1,20 @@
+ion-grid {
+    --ion-grid-column-padding: 8px;
+
+    .header {
+        font-weight: bold;
+        background-color: #f4f4f4;
+        text-align: center;
+    }
+
+    .action {
+        cursor: pointer;
+        color: var(--ion-color-primary);
+    }
+
+    .no-data {
+        text-align: center;
+        color: gray;
+        font-style: italic;
+    }
+}

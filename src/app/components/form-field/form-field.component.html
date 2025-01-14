@@ -1,0 +1,132 @@
+<ion-card color="light">
+  <ion-card-content>
+    <form [formGroup]="dynamicForm">
+      <div *ngFor="let field of formFieldRef.fields">
+        <input *ngIf="field.type==='hidden'" [formControlName]="field.name" type="hidden" />
+        <input *ngIf="field.type==='user'" [formControlName]="field.name" type="hidden" />
+        <div *ngIf="field.type==='header'" class="o-field">
+          <h1><ion-icon [name]="field.icon" *ngIf="field.icon"></ion-icon> {{field.label}}</h1>
+        </div>
+        <div *ngIf="field.type==='text' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <input [placeholder]="field.placeholder??''" [formControlName]="field.name" />
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['mismatch']">Mismatch!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='date' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <app-date-field [formControlName]="field.name" [min]="field.minDay" [max]="field.maxDay"
+            [isDisabled]="field.disable??false" [name]="field.name"></app-date-field>
+        </div>
+        <div *ngIf="field.type==='number' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <input [placeholder]="field.placeholder??''" [formControlName]="field.name" type="number" />
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['mismatch']">Mismatch!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='textarea' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <textarea [placeholder]="field.placeholder??''" [formControlName]="field.name"></textarea>
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['mismatch']">Mismatch!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='email' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <input [placeholder]="field.placeholder??''" [formControlName]="field.name" type="email" />
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['mismatch']">Mismatch!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='password' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <input [placeholder]="field.placeholder??''" [formControlName]="field.name" type="password" />
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['mismatch']">Mismatch!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='select' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <select class="o-select" [formControlName]="field.name"
+            (change)="onChangeEvent($event, field.name,field.refChild,field.scaffold??'')">
+            <ng-container *ngIf="field.options | async as Option">
+              <option [value]="''" *ngIf="Option.length>1 || field.isAutoSelectStop">
+
+                {{ 'Select ' + field.label }}
+              </option>
+              <option *ngFor="let option of Option" [value]="option.value">
+                {{ getOptionValue(field.name,option.label,Option.length,option.value,field.isAutoSelectStop) }}
+              </option>
+            </ng-container>
+          </select>
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='chip' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <ion-item>
+            <ion-textarea [formControlName]="field.name"></ion-textarea>
+            <ion-buttons slot="end">
+              <ion-button fill="clear" *ngIf="checkWithValue(field.name)" (click)="clearInput(field.name)">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </div>
+        <div *ngIf="field.type==='chip-hidden'" class="o-field" style="display: none;">
+          <input [formControlName]="field.name" />
+        </div>
+
+        <div *ngIf="field.type==='image' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <app-file-upload [icon]="field.icon ?? ''" [formControlName]="field.name" [reset]="reset" [userId]="userId"
+            [name]="field.name"></app-file-upload>
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='attachment'" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <app-attachment [icon]="field.icon ?? ''" [name]="field.name" [formControlName]="field.name"
+            [reset]="reset"></app-attachment>
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+          </div>
+        </div>
+        <div *ngIf="field.type==='radio' && checkHide((field.hide|async))" class="o-field">
+          <label>{{field.label}}<span class="validator" *ngIf="field.required">*</span></label>
+          <ion-list>
+            <ion-radio-group (ionChange)="onRadioChange($event,'radio')" [formControlName]="field.name">
+              <ion-item *ngFor="let option of (field.options | async)">
+                <ion-radio [value]="option.value">{{option.label}}</ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+          <!-- <div *ngFor="let option of (field.options | async)">
+            <input type="radio" [value]="option.value" [formControlName]="field.name" [id]="option.value" />
+            <label [for]="option.value">{{option.label}}</label>
+          </div> -->
+          <div class="alert">
+            <div *ngIf="isSubmitted && dynamicForm.controls[field.name].errors?.['required']">Required!.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-section">
+        <ion-button *ngFor="let button of formFieldRef.buttons" (click)="onButtonClick(button.type)"
+          [color]="button.type === 'submit' ? 'amber' : (button.type === 'draft' ? 'success' : (button.type === 'rewind' ? 'warning' : 'danger'))">
+          <ion-icon [name]="button.icon" *ngIf="button.icon"></ion-icon>
+          {{ button.label }}
+        </ion-button>
+      </div>
+    </form>
+  </ion-card-content>
+</ion-card>

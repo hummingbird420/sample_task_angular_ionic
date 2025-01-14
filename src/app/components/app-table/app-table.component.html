@@ -1,0 +1,56 @@
+<ion-grid>
+  <ion-row *ngIf="tableData?.length && tableDataKey?.length">
+    <!-- Table Header -->
+    <ion-col *ngFor="let key of tableDataKey" [class]="key.align + ' header'">
+      {{ key.label }}
+    </ion-col>
+  </ion-row>
+
+  <!-- Table Body -->
+  <ion-row *ngFor="let item of tableData; let i = index">
+    <ion-col *ngFor="let key of tableDataKey" [class]="key.align">
+      <!-- Check if data exists -->
+      <ng-container *ngIf="item[key.value] && item[key.value] !== '_Unknown'">
+        <!-- Display data -->
+        <div *ngIf="!key.iconOnly && key.type !== 'date'">{{ item[key.value] }}</div>
+        <div *ngIf="key.type === 'date'">{{ item[key.value] | date: 'dd/MM/yyyy hh:mm a' }}</div>
+
+        <!-- Action Button -->
+        <div *ngIf="key.callBack" (click)="callBack(item, key.value)" class="action">
+          <span [innerHTML]="item[key.value] | sanitize"></span>
+        </div>
+      </ng-container>
+
+      <!-- Icon-Only Columns -->
+      <ng-container *ngIf="key.iconOnly">
+        <ion-icon [name]="key.icon"></ion-icon>
+      </ng-container>
+
+      <ng-container *ngIf="hasButtonType()">
+        <ng-container>
+          <ng-container *ngFor="let button of tableDataKey">
+
+            <ion-button *ngIf="button.buttonType?.includes(2)" size="small" color="medium" (click)="onEditData(item)">
+              <ion-icon name="pencil"></ion-icon>&nbsp; Edit
+            </ion-button>
+            <ion-button *ngIf="button.buttonType?.includes(3) && item['IsDeleteButton']" size="small" color="danger"
+              (click)="callBack(item, 'delete')">
+              <ion-icon name="trash"></ion-icon>&nbsp; Delete
+            </ion-button>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ion-col>
+  </ion-row>
+
+  <!-- Buttons Row -->
+
+
+  <!-- No Data Found -->
+  <ion-row *ngIf="tableData?.length === 0" class="no-data">
+    <ion-col class="nodata-field" text-center>
+      <ion-icon name="alert-outline" size="large"></ion-icon>
+      <div>No data found.</div>
+    </ion-col>
+  </ion-row>
+</ion-grid>
